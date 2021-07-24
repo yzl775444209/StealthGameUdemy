@@ -48,6 +48,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
 	UAnimSequence* FireAnimation;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Gameplay")
+	int32 PickUpNum;
 protected:
 	
 	/** Fires a projectile. */

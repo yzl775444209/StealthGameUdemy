@@ -27,6 +27,9 @@ AFPSCharacter::AFPSCharacter()
 	GunMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP_Gun"));
 	GunMeshComponent->CastShadow = false;
 	GunMeshComponent->SetupAttachment(Mesh1PComponent, "GripPoint");
+
+	//初始化为0
+	PickUpNum = 0;
 }
 
 
