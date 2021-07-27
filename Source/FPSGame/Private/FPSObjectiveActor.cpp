@@ -5,6 +5,7 @@
 #include "Components/MeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Public/FPSCharacter.h"
 // Sets default values
 AFPSObjectiveActor::AFPSObjectiveActor()
 {
@@ -44,6 +45,13 @@ void AFPSObjectiveActor::Tick(float DeltaTime)
 void AFPSObjectiveActor::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
+	if (OtherActor) {
+		AFPSCharacter* PC = Cast< AFPSCharacter>(OtherActor);
+		if (PC) {
+			PC->PickUpNum++;
+		}
+			
+	}
 	PlayEffects();
 }
 
