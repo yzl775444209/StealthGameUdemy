@@ -33,6 +33,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* CameraComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
+	class UPawnNoiseEmitterComponent* NoiseEmitterComp;
 public:
 	AFPSCharacter();
 
@@ -48,13 +50,15 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
 	UAnimSequence* FireAnimation;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Gameplay")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Gameplay",Replicated)
 	int32 PickUpNum;
 protected:
 	
 	/** Fires a projectile. */
 	void Fire();
-
+	//只在服务端执行，可靠的，有前置条件
+	UFUNCTION(Server,Reliable,WithValidation)
+	void Server_Fire();
 	/** Handles moving forward/backward */
 	void MoveForward(float Val);
 
@@ -63,6 +67,7 @@ protected:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 
+	virtual void Tick( float DeltaSeconds ) override;
 public:
 	/** Returns Mesh1P subobject **/
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1PComponent; }

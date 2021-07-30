@@ -19,7 +19,7 @@ AFPSExtractionZone::AFPSExtractionZone()
 	BoxComp->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	BoxComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	RootComponent = BoxComp;
-
+	BoxComp->SetHiddenInGame(false);
 	DecalComp = CreateDefaultSubobject<UDecalComponent>(TEXT("DecalComp"));
 	DecalComp->DecalSize = FVector(200.0f, 200.0f, 200.0f);
 	DecalComp->SetupAttachment(RootComponent);

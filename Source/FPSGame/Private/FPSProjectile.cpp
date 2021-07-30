@@ -3,7 +3,7 @@
 #include "FPSProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
-
+#include "Public/FPSCharacter.h"
 AFPSProjectile::AFPSProjectile() 
 {
 	// Use a sphere as a simple collision representation
@@ -29,6 +29,8 @@ AFPSProjectile::AFPSProjectile()
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+	SetReplicates(true);
+	SetReplicateMovement(true);
 }
 
 
@@ -38,7 +40,7 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-
+			this->MakeNoise(10.0f, GetInstigator(), GetActorLocation());
 		Destroy();
 	}
 }
