@@ -18,7 +18,8 @@ AFPSAIGuard::AFPSAIGuard()
 
 	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
 
-	GuardState = EAIState::Idle;
+	SetReplicates(true);
+	//GuardState = EAIState::Idle;
 }
 
 // Called when the game starts or when spawned
@@ -27,7 +28,11 @@ void AFPSAIGuard::BeginPlay()
 	Super::BeginPlay();
 	PawnSensingComp->OnSeePawn.AddDynamic(this, &AFPSAIGuard::OnPawnSeend);
 	PawnSensingComp->OnHearNoise.AddDynamic(this, &AFPSAIGuard::OnNoiseHeard);
-	MoveToNextPatrolPoint();
+	if(bPatrol)
+		MoveToNextPatrolPoint();
+	if(HasAuthority())
+		SetGuardState(EAIState::Idle);
+	UE_LOG(LogTemp, Warning,TEXT("ttt %d"),GuardState);
 }
 
 // Called every frame
@@ -98,7 +103,8 @@ void AFPSAIGuard::OnNoiseHeard(APawn* Pawn, const FVector& Location, float Volum
 	FRotator fRotator = FRotationMatrix::MakeFromX(fDirection).Rotator();
 	SetActorRotation(fRotator);
 	GetWorldTimerManager().ClearTimer(ResetHandle);
-	GetWorldTimerManager().SetTimer(ResetHandle, this, &AFPSAIGuard::ResetRotation, 3.0f, false, -1.0f);
+	//GetWorldTimerManager().SetTimer(ResetHandle, this, &AFPSAIGuard::ResetRotation, 3.0f, false, -1.0f);
+	GetWorldTimerManager().SetTimer(ResetHandle, FTimerDelegate::CreateUObject(this, &AFPSAIGuard::ResetRotation), 3.0f, false, -1.0f);
 	SetGuardState(EAIState::Suspicious);
 	GetController()->StopMovement();
 }

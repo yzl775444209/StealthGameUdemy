@@ -69,6 +69,6 @@ public:
 	void ResetRotation();
 
 	void SetGuardState(EAIState NewState);
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent, Category = "AI")
 		void OnGuardChanged(EAIState NewState);
 };
